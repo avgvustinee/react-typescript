@@ -2,16 +2,21 @@ import { useState } from "react";
 import Button from "./components/Button/Button";
 
 const App = () => {
-  const [drink, setDrink] = useState({
-    title: "Coke",
-    price: 12,
+  const [customer, setCustomer] = useState({
+    name: "Augustine",
+    address: {
+      city: "Polokwane",
+      country: "South Africa",
+    },
   });
   const handleClick = () => {
-    setDrink({...drink, price: 15});
+    setCustomer({
+      ...customer,
+      address: { ...customer.address, country: "England" },
+    });
   };
   return (
     <div>
-      <h1>{drink.price}</h1>
       <Button onClick={handleClick}>Show</Button>
     </div>
   );
