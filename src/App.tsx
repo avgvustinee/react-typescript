@@ -2,16 +2,17 @@ import { useState } from "react";
 import Button from "./components/Button/Button";
 
 const App = () => {
-  const [isVisible, setAlertVisibility] = useState(false);
-  const handleClick = ()=>{
-    setAlertVisibility(true);
-    console.log(isVisible);
-  }
+  const [drink, setDrink] = useState({
+    title: "Coke",
+    price: 12,
+  });
+  const handleClick = () => {
+    setDrink({...drink, price: 15});
+  };
   return (
     <div>
-    <Button onClick={handleClick}>
-      Show
-    </Button>
+      <h1>{drink.price}</h1>
+      <Button onClick={handleClick}>Show</Button>
     </div>
   );
 };
