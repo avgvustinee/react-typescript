@@ -6,7 +6,7 @@ const ProductList = ({ category }: { category: string }) => {
   useEffect(() => {
     console.log("Fetching Products in", category);
     setProducts(["Clothing", "Household"]);
-  }, [category]);
+  }, [category, products]);
   return <div>ProductList</div>;
 };
 
