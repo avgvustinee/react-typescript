@@ -1,11 +1,10 @@
-import { optional } from "zod";
 import categories from "../constants/expenseConstants";
 
 interface Props {
   onSelectCategory: (category: string) => void;
 }
 
-const ExpenseFilter = ({ onSelectCategory }: Props) => {
+const ExpenseFilter =  ({ onSelectCategory }: Props) => {
   return (
     <select
       className="form-select"
