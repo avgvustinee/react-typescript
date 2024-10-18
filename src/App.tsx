@@ -1,37 +1,67 @@
 import axios, { CanceledError } from "axios";
 import { useEffect, useState } from "react";
 
-interface Users {
+interface User {
   id: number;
   name: string;
 }
 
 const App = () => {
-  const [users, setUsers] = useState<Users[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
+    setLoading(true);
     axios
-      .get<Users[]>("https://jsonplaceholder.typicode.com/users", {
+      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
         signal: controller.signal,
       })
-      .then((res) => setUsers(res.data))
+      .then((res) => {
+        setUsers(res.data);
+        setLoading(false);
+      })
       .catch((err) => {
         if (err instanceof CanceledError) return;
         setError(err.message);
+        setLoading(false);
       });
 
     // cleanup function
     return () => controller.abort();
-  }, [users]);
+  }, []);
+
+  const deleteUser = (user: User) => {
+    const originalUsers = [...users];
+    setUsers(users.filter((u) => u.id !== user.id));
+
+    axios
+      .delete("https://jsonplaceholder.typicode.com/users/" + user.id)
+      .catch((error) => {
+        setError(error.message);
+        setUsers(originalUsers);
+      });
+  };
 
   return (
     <>
       {error && <p className="text-danger">{error}</p>}
-      <ul>
+      {isLoading && <div className="spinner-border"></div>}
+      <ul className="list-group">
         {users.map((user) => (
-          <li key={user.id}>{user.name}</li>
+          <li
+            key={user.id}
+            className="list-group-item d-flex justify-content-between"
+          >
+            {user.name}
+            <button
+              className="btn btn-outline-danger"
+              onClick={() => deleteUser(user)}
+            >
+              Delete
+            </button>
+          </li>
         ))}
       </ul>
     </>
